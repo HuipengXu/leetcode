@@ -1,4 +1,2 @@
 # leetcode
-leetcode exercises
-
-## kepp coding
+keep coding
