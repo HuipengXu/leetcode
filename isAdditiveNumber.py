@@ -11,7 +11,6 @@ def isAdditiveNumber(num):
             break
         s1 = num[0: i]
         num1 = int(s1)
-        print(num1)
         for j in range(i + 1, len(num) - i + 1):
             if num[i] == '0' and j > i + 1:
                 break
