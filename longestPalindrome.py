@@ -7,6 +7,11 @@
 
 
 class Solution:
+    """
+    巨丑的代码。。。。
+    算了，好歹是自己想出来的
+    """
+
     def longestPalindrome(self, s):
         """
         :type s: str
