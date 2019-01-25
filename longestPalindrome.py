@@ -51,3 +51,44 @@ class Solution:
                     else:
                         flag = False
         return s[longest_p:(longest_q + 1)]
+
+
+def longestPalindrome(s: str):
+    """
+    Manacher 算法
+    参考：https://segmentfault.com/a/1190000008484167
+    """
+    # 重新构造 s 以解决就问题分别讨论
+    if len(s) == 0 or len(s) == 1:
+        return s
+
+    new_s = ['$#']
+    for c in s:
+        new_s.append(c)
+        new_s.append('#')
+    new_s.append('%')
+    new_s = ''.join(new_s)
+
+    max_right = id = max_length = 1
+    max_i = None
+    length = len(new_s)
+    p = [1] * length
+    for i in range(1, length - 1):
+        if i < max_right:
+            p[i] = min(p[2 * id - i], max_right - i)
+        while new_s[i - p[i]] == new_s[i + p[i]]:
+            p[i] += 1
+        if p[i] > max_right:
+            max_right = i + p[i]
+            id = i
+        if max_length <= p[i] - 1:
+            max_length = p[i] - 1
+            max_i = i
+
+    r = int(max_length / 2)
+    if max_i % 2:
+        center = int(max_i / 2)
+        return s[center - r:center + r]
+    else:
+        center = int((max_i - 2) / 2)
+        return s[center - r:center + r + 1]
