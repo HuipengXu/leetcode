@@ -53,7 +53,7 @@ class Solution:
         return s[longest_p:(longest_q + 1)]
 
 
-def longestPalindrome(s: str):
+def longestPalindrome0(s: str):
     """
     Manacher 算法
     参考：https://segmentfault.com/a/1190000008484167
@@ -92,3 +92,27 @@ def longestPalindrome(s: str):
     else:
         center = int((max_i - 2) / 2)
         return s[center - r:center + r + 1]
+
+
+def longestPalindrome1(s: str):
+    """
+    动态规划解
+    参考：https://segmentfault.com/a/1190000003914228#articleHeader7
+    """
+    # 初始化状态矩阵
+    length = len(s)
+    if length in [0, 1]:
+        return s
+    state = [[0] * length for _ in range(length)]
+    max_len = 0
+    longest_j = longest_i = 0
+    for i in range(length):
+        j = i
+        while j >= 0:
+            if s[i] == s[j] and (i - j < 2 or state[j + 1][i - 1]):
+                state[j][i] = 1
+                if i - j > max_len:
+                    max_len = i - j
+                    longest_i, longest_j = i, j
+            j -= 1
+    return s[longest_j: longest_i + 1]
