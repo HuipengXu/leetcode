@@ -38,7 +38,7 @@ def word_break_dp(s: str, word_dict: List[str]) -> List[str]:
             sentence = ' '.join(words).strip()
             sentences.append(sentence)
             return
-        for j in range(i + 1, len(s)):
+        for j in range(i + 1, len(s) + 1):
             if dp[j] and s[i:j] in word_dict:
                 words.append(s[i:j])
                 recur(j)
@@ -54,9 +54,9 @@ def word_break_dp(s: str, word_dict: List[str]) -> List[str]:
 if __name__ == "__main__":
     # s = "pineapplepenapple"
     # word_dict = ['apple', 'pen', 'applepen', 'pine', 'pineapple']
-    # s = "catsanddog"
-    # word_dict = ["cat", "cats", "and", "sand", "dog"]
-    s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-    word_dict = ["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaa"]
+    s = "catsanddog"
+    word_dict = ["cat", "cats", "and", "sand", "dog"]
+    # s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    # word_dict = ["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaa"]
     # print(word_break_bt(s, word_dict))
     print(word_break_dp(s, word_dict))
