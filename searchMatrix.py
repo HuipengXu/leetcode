@@ -15,14 +15,18 @@ def searchMatrix(matrix, target):
     :rtype: bool
     """
     if len(matrix) == 0 or len(matrix[0]) == 0: return False
-    width = len(matrix)
-    length = len(matrix[0])
-    for i in range(width - 1, -1, -1):
-        if matrix[i][-1] < target:
-            continue
-        for j in range(length - 1, -1, -1):
-            if matrix[i][j] == target:
-                return True
-            if matrix[i][j] < target:
-                break
+    i, j = len(matrix) - 1, len(matrix[0]) - 1
+    j_border = 0
+    while i >= 0 and j_border < len(matrix[0]):
+        if target < matrix[i][j]:
+            j -= 1
+            if j < j_border:
+                j = len(matrix[0]) - 1
+                i -= 1
+        elif target > matrix[i][j]:
+            j_border = j + 1
+            j = len(matrix[0]) - 1
+            i -= 1
+        else:
+            return True
     return False
