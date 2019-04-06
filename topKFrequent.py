@@ -3,7 +3,7 @@
 # @Blog    : https://brycexxx.github.io/
 
 from typing import List, Tuple
-from collections import defaultdict
+from collections import defaultdict, Counter
 import heapq
 
 
@@ -64,7 +64,17 @@ def topKFrequent1(nums: List[int], k: int) -> List[int]:
     return [counts_sorted[-i][0] for i in range(1, k + 1)]
 
 
+def topKFrequent2(nums, k):
+    bucket, res = [[] for _ in range(len(nums) + 1)], []
+    for a, b in Counter(nums).items():
+        bucket[b].append(a)
+    for l in bucket[::-1]:
+        if len(l): res += l
+        if len(res) >= k: return res[: k]
+
+
 if __name__ == "__main__":
-    nums = [1, 1, 1, 2, 2, 2, 3, 3, 3, 3]
-    print(topKFrequent0(nums, 2))
-    print(topKFrequent1(nums, 2))
+    nums = [1, 1, 1, 2, 2, 3, 4, 3, 2]
+    print(topKFrequent0(nums, 3))
+    print(topKFrequent1(nums, 3))
+    print(topKFrequent2(nums, 3))
