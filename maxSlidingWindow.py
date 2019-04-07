@@ -3,7 +3,6 @@
 # @Blog    : https://brycexxx.github.io/
 
 from typing import List
-import heapq
 
 
 def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
