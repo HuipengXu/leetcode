@@ -2,7 +2,7 @@
 # @Author  : Xu Huipeng
 # @Blog    : https://brycexxx.github.io/
 
-from typing import List, Union, Tuple
+from typing import List, Tuple
 
 
 def evalRPN(tokens: List[str]) -> int:
