@@ -3,11 +3,12 @@
 # @Blog    : https://brycexxx.github.io/
 
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
 
 class Solution:
     """
@@ -71,9 +72,7 @@ class Solution:
         :type q: TreeNode
         :rtype: TreeNode
         """
-        if root is None or p is None or q is None:
-            return None
-        if root == p or root == q:
+        if root is None or root == p or root == q:
             return root
         left = self.lowestCommonAncestor1(root.left, p, q)
         right = self.lowestCommonAncestor1(root.right, p, q)
@@ -82,3 +81,31 @@ class Solution:
         if right is None:
             return left
         return root
+
+    # 时间复杂度过高，重复搜索浪费时间
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        def in_tree(root: 'TreeNode', target: 'TreeNode') -> bool:
+            stack = []
+            while root:
+                stack.append(root)
+                root = root.left
+            while stack:
+                node = stack.pop()
+                if node == target: return True
+                node = node.right
+                while node:
+                    stack.append(node)
+                    node = node.left
+            return False
+
+        if root == p or root == q: return root
+        while True:
+            if (in_tree(root.left, p) and in_tree(root.right, q)) or \
+                    (in_tree(root.right, p) and in_tree(root.left, q)):
+                return root
+            elif in_tree(root.left, p) and in_tree(root.left, q):
+                root = root.left
+                if root == p or root == q: return root
+            elif in_tree(root.right, p) and in_tree(root.right, q):
+                root = root.right
+                if root == p or root == q: return root
