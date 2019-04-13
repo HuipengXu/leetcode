@@ -50,6 +50,27 @@ class Solution:
         return '0' if ret[0] == '0' else ret
 
 
+# 来源于 leetcode
+class LargerNumKey(str):
+    def __lt__(x, y):
+        return x + y > y + x
+
+
+class Solution1:
+    def largestNumber(self, nums: List[int]) -> str:
+        largest_num = ''.join(sorted(map(str, nums), key=LargerNumKey))
+        return '0' if largest_num[0] == '0' else largest_num
+
+
+class Solution2:
+    def largestNumber(self, nums: List[int]) -> str:
+        from functools import cmp_to_key
+
+        comp = lambda a, b: 1 if a + b < b + a else -1 if a + b > b + a else 0
+
+        return str(int(''.join(sorted([str(x) for x in nums], key=cmp_to_key(comp)))))
+
+
 if __name__ == "__main__":
     s = Solution()
     a = [0, 0]
