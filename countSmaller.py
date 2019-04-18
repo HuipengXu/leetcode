@@ -91,12 +91,19 @@ class Solution:
         """
         线段树
         """
-        if len(nums) == 0: return []
         hash_table = {v: i for i, v in enumerate(sorted(set(nums)))}
         tree, ret = SegmentTree1(len(hash_table)), [0] * len(nums)
         for i in range(len(nums) - 1, -1, -1):
             ret[i] = tree.sum(hash_table[nums[i]] - 1)
             tree.update(hash_table[nums[i]])
+        return ret
+
+    def countSmaller5(self, nums: List[int]) -> List[int]:
+        hash_table = {v: i for i, v in enumerate(sorted(set(nums)))}
+        tree, ret = BinarySearchTree(len(hash_table)), [0] * len(nums)
+        for i in range(len(nums) - 1, -1, -1):
+            ret[i] = tree.sum(hash_table[nums[i]])
+            tree.insert(hash_table[nums[i]])
         return ret
 
 
@@ -215,10 +222,72 @@ class SegmentTree1:
             return node.left.val + self.sum(index, node.right)
 
 
+class BinaryTreeNode:
+
+    def __init__(self, val: int, count: int = 0):
+        self.val = val
+        self.count = count
+        self.left = None
+        self.right = None
+
+    def __repr__(self):
+        return '<BinaryTreeNode: {}>'.format(self.val)
+
+
+class BinarySearchTree:
+
+    def __init__(self, n):
+        self.root = self._build_tree(0, n - 1)
+
+    def _build_tree(self, start: int, end: int) -> Optional[BinaryTreeNode]:
+        if start > end: return
+        mid = start + ((end - start) >> 1)
+        node = BinaryTreeNode(mid, 0)
+        node.left = self._build_tree(start, mid - 1)
+        node.right = self._build_tree(mid + 1, end)
+        return node
+
+    def insert(self, val: int) -> None:
+        node = self.root
+        bigger = []
+        while node:
+            if val < node.val:
+                bigger.append(node.right)
+                node.count += 1
+                node = node.left
+            elif val > node.val:
+                node = node.right
+            else:
+                if node.right:
+                    bigger.append(node.right)
+                break
+
+        def pre_order(node: BinaryTreeNode):
+            if node is None: return
+            node.count += 1
+            pre_order(node.left)
+            pre_order(node.right)
+
+        for n in bigger:
+            pre_order(n)
+
+    def sum(self, index: int) -> int:
+        node = self.root
+        while node:
+            if node.val == index:
+                break
+            elif node.val < index:
+                node = node.right
+            else:
+                node = node.left
+        return node.count
+
+
 if __name__ == "__main__":
-    num = [8, 5, 4, 6, 7, 2, 1, 2]
     s = Solution()
+    num = [4, 1, 2, 3, 8, 7, 0, 10]
     print(s.countSmaller0(num))
     print(s.countSmaller1(num))
     print(s.countSmaller3(num))
     print(s.countSmaller4(num))
+    print(s.countSmaller5(num))
