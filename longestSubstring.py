@@ -47,9 +47,38 @@ class Solution:
         tokens = re.split('|'.join(filters), s)
         return max(self.longestSubstring2(token, k) for token in tokens)
 
+    # 时间复杂度为 O(n)，外层只会循环 26 次，内层要么是 i 要么是 j 增加 1，所以最多 2n，故最糟糕的情况为 O(52n)
+    # 来自 https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/discuss/87739/Java-Strict-O(N)-Two-Pointer-Solution
+    def longestSubString3(self, s: str, k: int) -> int:
+        max_length = 0
+        for h in range(1, 27):
+            counts = [0] * 26
+            i = j = unique = no_less_than_k = 0
+            while j < len(s):
+                if unique <= h:
+                    idx = ord(s[j]) - ord('a')
+                    if counts[idx] == 0:
+                        unique += 1
+                    counts[idx] += 1
+                    if counts[idx] == k:
+                        no_less_than_k += 1
+                    j += 1
+                else:
+                    idx = ord(s[i]) - ord('a')
+                    if counts[idx] == k:
+                        no_less_than_k -= 1
+                    counts[idx] -= 1
+                    if counts[idx] == 0:
+                        unique -= 1
+                    i += 1
+                if unique == h and no_less_than_k == unique:
+                    max_length = max(j - i, max_length)
+        return max_length
+
 
 if __name__ == '__main__':
-    ss = 'aaabb'
+    ss = 'sahgdjgjd'
     s = Solution()
     print(s.longestSubstring0(ss, 2))
     print(s.longestSubstring2(ss, 2))
+    print(s.longestSubString3(ss, 2))
