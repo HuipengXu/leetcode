@@ -79,6 +79,22 @@ class Solution:
         ret = amount_map[amount] if amount_map[amount] < float('inf') else -1
         return ret if amount else 0
 
+    # 来自：https://leetcode.com/problems/coin-change/discuss/77416/Python-11-line-280ms-DFS-with-early-termination-99-up
+    def coinChange4(self, coins: List[int], amount: int) -> int:
+        coins.sort(reverse=True)
+        lenc, res = len(coins), 2 ** 31 - 1
+
+        def dfs(pt, rem, count):
+            nonlocal res
+            if not rem:
+                res = min(res, count)
+            for i in range(pt, lenc):
+                if coins[i] <= rem < coins[i] * (res - count):  # if hope still exists
+                    dfs(i, rem - coins[i], count + 1)
+
+        for i in range(lenc):
+            dfs(i, amount, 0)
+        return res if res < 2 ** 31 - 1 else -1
 
 if __name__ == '__main__':
     coins = [470, 18, 66, 301, 403, 112, 360]
@@ -87,3 +103,4 @@ if __name__ == '__main__':
     print(s.coinChange1(coins, amount))
     print(s.coinChange2(coins, amount))
     print(s.coinChange3(coins, amount))
+    print(s.coinChange4(coins, amount))
