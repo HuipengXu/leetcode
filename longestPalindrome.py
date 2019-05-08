@@ -116,3 +116,52 @@ def longestPalindrome1(s: str):
                     longest_i, longest_j = i, j
             j -= 1
     return s[longest_j: longest_i + 1]
+
+
+def longestPalindrome2(s: str) -> str:
+    if len(s) == 0: return ''
+    states = [[0 for _ in range(j + 1)] for j in range(len(s))]
+    states[0][0] = 1
+    max_len = 1
+    start, end = 0, 1
+    for i in range(1, len(s)):
+        for j in range(len(states[i - 1])):
+            if states[i - 1][j] == 1 and j - 1 >= 0 and s[j - 1] == s[i]:
+                states[i][j - 1] = 1
+                if i - j + 2 > max_len:
+                    max_len = i - j + 2
+                    start, end = j - 1, i + 1
+        if s[i] == s[i - 1]:
+            if max_len < 2:
+                max_len = 2
+                start, end = i - 1, i + 1
+            states[i][i - 1] = 1
+        states[i][i] = 1
+    return s[start: end]
+
+
+def longestPalindrome3(s: str) -> str:
+    if len(s) == 0: return ''
+    start, end = 0, 1
+
+    def expand(left: int, right: int) -> int:
+        while (left >= 0 and right < len(s)
+               and s[left] == s[right]):
+            left -= 1
+            right += 1
+        return right - left - 1
+
+    for i in range(len(s)):
+        len1 = expand(i, i)
+        len2 = expand(i, i + 1)
+        len_ = max(len1, len2)
+        if len_ > (end - start):
+            start = i - (len_ - 1) // 2
+            end = i + len_ // 2 + 1
+    return s[start: end]
+
+
+if __name__ == '__main__':
+    ss = "cbbd"
+    print(longestPalindrome2(ss))
+    print(longestPalindrome3(ss))
