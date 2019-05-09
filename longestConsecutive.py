@@ -73,7 +73,7 @@ class UnionFind:
 
 
 if __name__ == '__main__':
-    nums = [4, 1, 7, 6, 10, 3, 1, 2]
+    nums = [100, 4, 200, 1, 3, 2]
     s = Solution()
     print(s.longestConsecutive(nums))
     print(s.longestConsecutive1(nums))
