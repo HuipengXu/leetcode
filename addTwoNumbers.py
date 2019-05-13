@@ -40,3 +40,19 @@ class Solution:
         if carrying == 1:
             rl_node.next = ListNode(carrying)
         return rl.next
+
+    def addTwoNumbers1(self, l1: ListNode, l2: ListNode) -> ListNode:
+        carry = 0
+        ret = ListNode(0)
+        node = ret
+        while l1 or l2:
+            x = l1.val if l1 else 0
+            y = l2.val if l2 else 0
+            val = x + y + carry
+            carry, remainder = divmod(val, 10)
+            node.next = ListNode(remainder)
+            node = node.next
+            if l1: l1 = l1.next
+            if l2: l2 = l2.next
+        if carry: node.next = ListNode(carry)
+        return ret.next
