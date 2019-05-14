@@ -33,3 +33,19 @@ class Solution:
             return new_head
 
         return recur(None, head)
+
+    def reverseList2(self, head: ListNode) -> Optional[ListNode]:
+        new_head = None
+
+        def recur(node: ListNode):
+            nonlocal new_head
+            if not node or not node.next:
+                new_head = node
+                return node
+            cur = recur(node.next)
+            cur.next = node
+            return node
+
+        tail = recur(head)
+        if tail: tail.next = None
+        return new_head
