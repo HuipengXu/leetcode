@@ -195,6 +195,75 @@ class Solution(object):
 
         return merge_sort_c(head)
 
+    # 更加简洁的递归合并，归并排序
+    def sortList5(self, head: ListNode) -> ListNode:
+        def merge_sort_c(head: ListNode) -> ListNode:
+            if not head or not head.next: return head
+            slow = fast = head
+            prev = None
+            while fast and fast.next and fast.next:
+                prev = slow
+                slow = slow.next
+                fast = fast.next.next
+            prev.next = None
+            l1 = merge_sort_c(head)
+            l2 = merge_sort_c(slow)
+            return merge(l1, l2)
+
+        def merge(l1: ListNode, l2: ListNode) -> ListNode:
+            if not l1: return l2
+            if not l2: return l1
+            if l1.val < l2.val:
+                l1.next = merge(l1.next, l2)
+                return l1
+            else:
+                l2.next = merge(l1, l2.next)
+                return l2
+
+        return merge_sort_c(head)
+
+    # bottom-up，归并排序，空间复杂度为 O(1)，时间复杂度O(nlogn)
+    def sortList6(self, head: ListNode) -> ListNode:
+        def cut(l: ListNode, n: int):
+            node = l
+            while n > 1 and node:
+                node = node.next
+                n -= 1
+            if not node: return None
+            cur = node.next
+            node.next = None
+            return cur
+
+        def merge(l1: ListNode, l2: ListNode) -> ListNode:
+            if not l1: return l2
+            if not l2: return l1
+            if l1.val < l2.val:
+                l1.next = merge(l1.next, l2)
+                return l1
+            else:
+                l2.next = merge(l1, l2.next)
+                return l2
+
+        dummy_head = ListNode(-1)
+        size, length = 1, 0
+        node = head
+        dummy_head.next = head
+        while node:
+            node = node.next
+            length += 1
+        while size < length:
+            cur = dummy_head.next
+            tail = dummy_head
+            while cur:
+                left = cur
+                right = cut(left, size)
+                cur = cut(right, size)
+                tail.next = merge(left, right)
+                while tail.next:
+                    tail = tail.next
+            size *= 2
+        return dummy_head.next
+
 
 if __name__ == "__main__":
     head = ListNode(4)
