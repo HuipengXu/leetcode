@@ -34,7 +34,7 @@ class Solution:
             lists[idx] = lists[idx].next
         return ret.next
 
-    # 小顶堆
+    # 小顶堆，原地
     def mergeKLists1(self, lists: List[ListNode]) -> Optional[ListNode]:
         if not lists: return None
         ret = ListNode(0)
@@ -52,7 +52,7 @@ class Solution:
             n.next = None
         return ret.next
 
-    # 小顶堆，原地
+    # 小顶堆
     def mergeKLists2(self, lists: List[ListNode]) -> Optional[ListNode]:
         if not lists: return None
         ret = ListNode(0)
