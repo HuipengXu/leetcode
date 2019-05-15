@@ -18,8 +18,15 @@ class Solution:
         max_profit += prices[-1] - left
         return max_profit
 
+    def maxProfit1(self, prices: List[int]) -> int:
+        ret = 0
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i - 1]:
+                ret += prices[i] - prices[i - 1]
+        return ret
 
 if __name__ == '__main__':
     s = Solution()
     prices = [1, 2, 3, 4, 5]
     print(s.maxProfit(prices))
+    print(s.maxProfit1(prices))
