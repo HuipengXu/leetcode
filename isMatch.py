@@ -32,6 +32,9 @@ class Solution:
         return match
 
 
+#     dp 解法：https://leetcode.com/problems/regular-expression-matching/discuss/5723/My-DP-approach-in-Python-with-comments-and-unittest
+
+
 if __name__ == '__main__':
     # s = "kjjkaaaan"
     # p = "**.j*k*a.a*."
