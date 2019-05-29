@@ -29,6 +29,7 @@ class Solution:
             res[tuple(sorted(word))].append(word)
         return list(res.values())
 
+    # 最好解法
     def groupAnagrams2(self, strs: List[str]) -> List[List[str]]:
         res = defaultdict(list)
         for word in strs:
