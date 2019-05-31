@@ -25,6 +25,7 @@ class Solution:
         return root
 
     def invertTree1(self, root: TreeNode) -> TreeNode:
+        if not root: return root
         queue = deque([root])
         while queue:
             node = queue.popleft()
