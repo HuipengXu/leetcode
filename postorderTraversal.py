@@ -48,6 +48,44 @@ class Solution:
         recur(root)
         return res
 
+    # 参考：https://leetcode-cn.com/problems/binary-tree-postorder-traversal/solution/er-cha-shu-hou-xu-bian-li-dian-xing-die-dai-fa-by-/
+    def postorderTraversal2(self, root: TreeNode) -> List[int]:
+        res, stack = [], []
+        last, node = None, root
+
+        while node or stack:
+            while node:
+                stack.append(node)
+                node = node.left
+            cur = stack[-1]
+            if not cur.right or last == cur.right:
+                stack.pop()
+                res.append(cur.val)
+                last, node = cur, None
+            else:
+                node = cur.right
+        return res
+
+    def postorderTraversal3(self, root: TreeNode) -> List[int]:
+        """
+        更为简洁的写法。这种解法的思想是先序遍历的变形，先序遍历是“根->左->右”，
+        后序遍历是“左->右->根”，那么把先序遍历改成“根->右->左”，再逆序一下就是后序遍历。
+        """
+        if not root: return []
+
+        res, stack = [], [root]
+
+        while stack:
+            cur = stack.pop()
+            res.append(cur.val)
+            if cur.left:
+                stack.append(cur.left)
+            if cur.right:
+                stack.append(cur.right)
+
+        return res[::-1]
+
+
 
 if __name__ == '__main__':
     root = TreeNode(1)
