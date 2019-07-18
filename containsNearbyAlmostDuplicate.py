@@ -21,15 +21,12 @@ class Solution:
     def containsNearbyAlmostDuplicate1(self, nums: List[int], k: int, t: int) -> bool:
         buckets = {}
 
-        def get_id(num: int, w: int) -> int:
-            return num // w if num >= 0 else num // w - 1
-
         for i, num in enumerate(nums):
-            m = get_id(num, t + 1)
+            m = num // (t + 1)
             if m in buckets: return True
             if m - 1 in buckets and num - buckets[m - 1] <= t: return True
             if m + 1 in buckets and buckets[m + 1] - num <= t: return True
             buckets[m] = num
-            if i >= k: buckets.pop(get_id(nums[i - k], t + 1))
+            if i >= k: buckets.pop(nums[i - k] // (t + 1))
 
         return False
